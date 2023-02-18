@@ -5,16 +5,16 @@ int TimeWM = 10;
 int TimeWS = 0;
 int TimeBM = 10;
 int TimeBS = 0;
-
+unsigned long startMillis;
+unsigned long currentMillis;
+const unsigned long period = 1000;
 //dont change StartTime variables
 int StartTimeWM = TimeWM;
 int StartTimeWS = TimeWS;
 int StartTimeBM = TimeBM;
 int StartTimeBS = TimeBS;
-
 int IncrementBlack = 1;
 int IncrementWhite = 1;
-
 bool WhiteCanIncrement = true;
 bool BlackCanIncrement = false;
 
@@ -41,7 +41,7 @@ void setup() {
   pinMode(SetupPin, INPUT);
   lcd.begin(16, 2);
   Serial.begin(9600);
-
+  startMillis = millis();
   /*
   TimeWM *= 1000;
   TimeWS *= 1000;
@@ -61,11 +61,10 @@ void loop() {
 
   WhiteButtonPinValue = digitalRead(WhiteButtonPin);
   BlackButtonPinValue = digitalRead(BlackButtonPin);
-
-  delay(1000);
 }
 
 void play_mode() {
+  currentMillis = millis();
   if (InputMode == "SWITCH") {
     SwitchPinValue = digitalRead(SwitchPin);
     //WHITE
@@ -117,37 +116,43 @@ void play_mode() {
       }
 
       if (CurrentTurn == "WHITE") {
+        if (currentMillis - startMillis >= period){
         if (TimeWS <= 0)
           {
             TimeWM -= 1;
             TimeWS = 59;
+            startMillis = currentMillis;
           }
         else
         { 
           TimeWS -= 1;
+          startMillis = currentMillis;
         }
-
+        }
         if (TimeWS <=0  && TimeWM <= 0) {
           CurrentMode = "END";
           Winner = "Black";          
         }
       }
-
       else if (CurrentTurn == "BLACK") {
+        if (currentMillis - startMillis >= period){
         if (TimeBS <= 0)
           {
             TimeBM -= 1;
             TimeBS = 59;
+            startMillis = currentMillis;
           }
         else
         { 
           TimeBS -= 1;
+          startMillis = currentMillis;
         }
 
         if (TimeBS <=0  && TimeBM <= 0) {
           CurrentMode = "END";
           Winner = "White";
         }
+      }
       }
     /*
       if (SetupPinValue == HIGH) {
@@ -255,17 +260,16 @@ void print_lcd() {
         break;
     }
     lcd.setCursor(0, 0);
-    lcd.print("W");
-    lcd.print(" ");
+    lcd.print("W ");
     lcd.print(TimeWM);
     lcd.print(":");
     lcd.print(WSPrint);
     lcd.setCursor(0, 1);
-    lcd.print("B");
-    lcd.print(" ");
+    lcd.print("B ");
     lcd.print(TimeBM);
     lcd.print(":");
     lcd.print(BSPrint);
+    delay(100);
   }
   else if (CurrentMode == "END") {
     lcd.clear();
