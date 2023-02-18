@@ -1,10 +1,10 @@
 #include <LiquidCrystal.h>
 const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
-int TimeWM = 0;
-int TimeWS = 5;
-int TimeBM = 0;
-int TimeBS = 5;
+int TimeWM = 10;
+int TimeWS = 0;
+int TimeBM = 10;
+int TimeBS = 0;
 
 //dont change StartTime variables
 int StartTimeWM = TimeWM;
@@ -280,4 +280,3 @@ void print_lcd() {
     }
   }
 }
-  
