@@ -1,4 +1,4 @@
 # arduino-chess-timer
 Chess timer for use with an Arduino board that has an LCD screen connected.
 
-Thanks to https://github.com/popothetanker for helping with like half of it
+Thanks to https://github.com/popothetanker for helping with a lot of it!
