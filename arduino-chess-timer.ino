@@ -1,5 +1,5 @@
 #include <LiquidCrystal.h>
-const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+const int rs = 2, en = 3, d4 = 4, d5 = 5, d6 = 6, d7 = 7;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 int TimeWM = 10;
 int TimeWS = 0;
@@ -28,10 +28,12 @@ int WhiteButtonPinValue = 0;
 int BlackButtonPinValue = 0;
 int SetupPinValue = 0;
 
-const int SwitchPin = 8;
-const int BlackButtonPin = 6;
-const int WhiteButtonPin = 7;
-const int SetupPin = 13;
+const int SetupPin = 8;
+const int SwitchPin = 9;
+const int BlackButtonPin = 10;
+const int WhiteButtonPin = 11;
+
+bool has_printed_end = false;
 
 
 void setup() {
@@ -272,13 +274,18 @@ void print_lcd() {
     delay(100);
   }
   else if (CurrentMode == "END") {
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print(Winner);
-    lcd.print(" ");
-    lcd.print("won");
-    lcd.setCursor(0, 1);
-    lcd.print("on time.");
+    if (has_printed_end == false) {
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print(Winner);
+      lcd.print(" ");
+      lcd.print("won");
+      lcd.setCursor(0, 1);
+      lcd.print("on time.");
+
+      has_printed_end = true;
+    }
+    
     if (WhiteButtonPinValue == HIGH or BlackButtonPinValue == HIGH) {
       CurrentMode == "PLAY";     
     }
